@@ -68,7 +68,7 @@ int main() {
         
         elapsedticks = _CP0_GET_COUNT()-lasttick;
         if (PORTBbits.RB4 == 1){
-            if (elapsedticks>11900){
+            if (elapsedticks>1190000){
                 LATAbits.LATA4 = !LATAbits.LATA4;
                 lasttick = _CP0_GET_COUNT();
             }
