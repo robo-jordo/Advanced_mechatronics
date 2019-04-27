@@ -69,6 +69,27 @@ void initExpander(){
     i2c_master_stop(); // make the stop bit
 }
 
+void initIMU(){
+    i2c_master_setup();
+    i2c_master_start(); // make the start bit
+    i2c_master_send(0b01000000); // write the address, shifted left by 1, or'ed with a 0 to indicate writing
+    i2c_master_send(0x00); // the register to write to
+    i2c_master_send(0xF0); // the value to put in the register
+    i2c_master_stop(); // make the stop bit
+    
+    i2c_master_start(); // make the start bit
+    i2c_master_send(0b01000000); // write the address, shifted left by 1, or'ed with a 0 to indicate writing
+    i2c_master_send(0x06); // the register to write to
+    i2c_master_send(0xF0); // the value to put in the register
+    i2c_master_stop(); // make the stop bit
+    
+    i2c_master_start(); // make the start bit
+    i2c_master_send(0b01000000); // write the address, shifted left by 1, or'ed with a 0 to indicate writing
+    i2c_master_send(0x0A); // the register to write to
+    i2c_master_send(0x01); // the value to put in the register
+    i2c_master_stop(); // make the stop bit
+}
+
 void setExpander(char pin, char level){
     i2c_master_start(); // make the start bit
     i2c_master_send(0b01000000); // write the address, shifted left by 1, or'ed with a 0 to indicate writing
@@ -83,6 +104,18 @@ char getExpander(){
     i2c_master_send(0x09); // the register to read from
     i2c_master_restart(); // make the restart bit
     i2c_master_send(0b01000001); // write the address, shifted left by 1, or'ed with a 1 to indicate reading
+    char r = i2c_master_recv(); // save the value returned
+    i2c_master_ack(1); // make the ack so the slave knows we got it
+    i2c_master_stop(); // make the stop bit
+    return r;
+}
+
+char getIMU(){
+    i2c_master_start(); // make the start bit
+    i2c_master_send(0b1101011); // write the address, shifted left by 1, or'ed with a 0 to indicate writin
+    i2c_master_send(0x0F); // the register to read from
+    i2c_master_restart(); // make the restart bit
+    i2c_master_send(0b1101011); // write the address, shifted left by 1, or'ed with a 1 to indicate reading
     char r = i2c_master_recv(); // save the value returned
     i2c_master_ack(1); // make the ack so the slave knows we got it
     i2c_master_stop(); // make the stop bit
