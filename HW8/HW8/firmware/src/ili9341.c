@@ -261,3 +261,83 @@ void LCD_clearScreen(unsigned short color) {
     
     CS = 1; // CS
 }
+
+void LCD_drawChar(int x, int y, char c, unsigned short color, unsigned short backColor){
+    int i = 0;
+    int k = 0;
+    for(i=0; i<5; i++){
+        for(k=0; k<8; k++){
+            if(ASCII[(c-0x20)][i]&(0b1<<k)){
+                LCD_drawPixel(x+i,y+k,color);
+            }
+            else{
+                LCD_drawPixel(x+i,y+k,backColor);
+            }
+        }
+    }
+}
+
+void LCD_drawString(int x, int y, char* array, unsigned short color, unsigned short backColor){
+    int l = 0;
+    while(array[l]!=0){
+        LCD_drawChar(x+l*6, y, array[l], color, backColor);
+        l++;
+    }
+}
+
+void LCD_progressBar(int x, int y, int fill, int full_length, unsigned short color, unsigned short backColor){
+    int i = 0;
+    int k = 0;
+    for(i=0; i<full_length; i++){
+        for(k=0; k<8; k++){
+            if(i<=fill){
+                LCD_drawPixel(x+i,y+k,color);
+            }
+            else{
+                LCD_drawPixel(x+i,y+k,backColor);
+            }
+        }
+    }
+    
+}
+
+void IMU_bars(short fillx, short filly, short full_length, unsigned short xcolor,unsigned short ycolor, unsigned short backColor){
+    int i = 0;
+    int k = 0;
+    for(i=-full_length; i<full_length; i++){
+        for(k=0; k<8; k++){
+            if (fillx<0){
+                if(i>=fillx && i<-4){
+                    LCD_drawPixel(120-i,156+k,xcolor);
+                }
+                else{
+                    LCD_drawPixel(120-i,156+k,backColor);
+                }
+            }
+            else{
+                if(i<=fillx && i>4){
+                    LCD_drawPixel(120-i,156+k,xcolor);
+                }
+                else{
+                    LCD_drawPixel(120-i,156+k,backColor);
+                }
+            }
+            if (filly<0){
+                if(i>=filly && i<-4){
+                    LCD_drawPixel(116+k,160-i,ycolor);
+                }
+                else{
+                    LCD_drawPixel(116+k,160-i,backColor);
+                }
+            }
+            else{
+                if(i<=filly && i>4){
+                    LCD_drawPixel(116+k,160-i,ycolor);
+                }
+                else{
+                    LCD_drawPixel(116+k,160-i,backColor);
+                }
+            }
+        }
+    }
+}
