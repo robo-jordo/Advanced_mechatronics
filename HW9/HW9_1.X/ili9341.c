@@ -228,6 +228,16 @@ void XPT2046_read(unsigned short *x, unsigned short *y, unsigned int *z){
     r2 = spi_io(0x00);
     *z = *z - (((r1<<8)|(r2))>>3) + 4095;
     
+    r1 = spi_io(0b10110001);
+    r2 = spi_io(0x00);
+    spi_io(0x00); 
+    *z = ((r1<<8)|(r2))>>3;
+    //z2
+    spi_io(0b11000001);
+    r1 = spi_io(0x00);
+    r2 = spi_io(0x00);
+    *z = *z - (((r1<<8)|(r2))>>3) + 4095;
+    
     spi_io(0b11010001);
     r1 = spi_io(0x00);
     r2 = spi_io(0x00); 

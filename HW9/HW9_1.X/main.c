@@ -211,14 +211,26 @@ int main() {
         LCD_drawString(160, 32, string4  , ILI9341_BLACK, ILI9341_WHITE);
         LCD_drawString(160, 52, string4  , ILI9341_BLACK, ILI9341_WHITE);
         sprintf(string4, "X: %d" , x );
-        LCD_drawString(160, 32, string4  , ILI9341_BLACK, ILI9341_GREEN);
+        LCD_drawString(160, 32, string4  , ILI9341_BLACK, ILI9341_WHITE);
         
         sprintf(string4, "Y: %d" , y );
-        LCD_drawString(160, 52, string4  , ILI9341_BLACK, ILI9341_GREEN);
+        LCD_drawString(160, 52, string4  , ILI9341_BLACK, ILI9341_WHITE);
         sprintf(string4, "z: %d" , z );
-        LCD_drawString(160, 72, string4  , ILI9341_BLACK, ILI9341_GREEN);
-        if (z>7500){
+        LCD_drawString(160, 72, string4  , ILI9341_BLACK, ILI9341_WHITE);
+        if (z>600){
             active = 1;
+            sprintf(string4, "adj X: %d" , (((x*240)/4000))+30);
+            LCD_drawString(160, 92, string4  , ILI9341_BLACK, ILI9341_WHITE);
+        
+            sprintf(string4, "adj Y: %d" , (((y*320)/4000)));
+            LCD_drawString(160, 112, string4  , ILI9341_BLACK, ILI9341_WHITE);
+        }
+        if((z<600)){
+                sprintf(string4, "           " );
+                LCD_drawString(160, 92, string4  , ILI9341_BLACK, ILI9341_WHITE);
+        
+                sprintf(string4, "           " );
+                LCD_drawString(160, 112, string4  , ILI9341_BLACK, ILI9341_WHITE);
         }
         
         if (active==1){
@@ -230,14 +242,13 @@ int main() {
                     state = -1;
                 }
             }
-            if((z<7500)){
-                
+            if((z<600)){
                 active =0;
                 score = score + state;
                 sprintf(string4, "         ");
-                LCD_drawString(100, 170, string4  , ILI9341_BLACK, ILI9341_GREEN);
+                LCD_drawString(100, 170, string4  , ILI9341_BLACK, ILI9341_WHITE);
                 sprintf(string4, "score: %d" , score );
-                LCD_drawString(100, 170, string4  , ILI9341_BLACK, ILI9341_GREEN);
+                LCD_drawString(100, 170, string4  , ILI9341_BLACK, ILI9341_WHITE);
             }
         }
         else{
