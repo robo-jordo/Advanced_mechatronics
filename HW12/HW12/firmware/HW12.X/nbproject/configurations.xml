@@ -22,6 +22,7 @@
           </logicalFolder>
         </logicalFolder>
         <itemPath>../src/app.h</itemPath>
+        <itemPath>../src/mouse.h</itemPath>
         <itemPath>../src/i2c_setup.h</itemPath>
         <itemPath>../src/ili9341.h</itemPath>
       </logicalFolder>
@@ -82,7 +83,7 @@
             <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/src/usb_device_function_driver.h</itemPath>
             <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/src/usb_device_local.h</itemPath>
             <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/src/usb_device_mapping.h</itemPath>
-            <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/src/usb_device_cdc_local.h</itemPath>
+            <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/src/usb_device_hid_local.h</itemPath>
           </logicalFolder>
           <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/usb_common.h</itemPath>
           <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/usb_chapter_9.h</itemPath>
@@ -93,8 +94,8 @@
           <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/usb_host_hub_interface.h</itemPath>
           <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/usb_device.h</itemPath>
           <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/usb_billboard.h</itemPath>
-          <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/usb_cdc.h</itemPath>
-          <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/usb_device_cdc.h</itemPath>
+          <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/usb_hid.h</itemPath>
+          <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/usb_device_hid.h</itemPath>
         </logicalFolder>
       </logicalFolder>
     </logicalFolder>
@@ -136,8 +137,9 @@
         </logicalFolder>
         <itemPath>../src/app.c</itemPath>
         <itemPath>../src/main.c</itemPath>
-        <itemPath>../src/ili9341.c</itemPath>
+        <itemPath>../src/mouse.c</itemPath>
         <itemPath>../src/i2c_setup.c</itemPath>
+        <itemPath>../src/ili9341.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="framework" projectFiles="true">
         <logicalFolder name="f2" displayName="driver" projectFiles="true">
@@ -163,8 +165,7 @@
           <logicalFolder name="f1" displayName="src" projectFiles="true">
             <logicalFolder name="f1" displayName="dynamic" projectFiles="true">
               <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/src/dynamic/usb_device.c</itemPath>
-              <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/src/dynamic/usb_device_cdc.c</itemPath>
-              <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/src/dynamic/usb_device_cdc_acm.c</itemPath>
+              <itemPath>../../../../../../../../microchip/harmony/v2_06/framework/usb/src/dynamic/usb_device_hid.c</itemPath>
             </logicalFolder>
           </logicalFolder>
         </logicalFolder>
@@ -192,7 +193,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>snap</platformTool>
         <languageToolchain>XC32</languageToolchain>
-        <languageToolchainVersion>2.15</languageToolchainVersion>
+        <languageToolchainVersion>1.42</languageToolchainVersion>
         <platform>2</platform>
       </toolsSet>
       <packs>
