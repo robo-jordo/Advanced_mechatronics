@@ -36,7 +36,38 @@
 #pragma config FUSBIDIO = ON // USB pins controlled by USB module
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
-
+void set_LED(long colour){
+    int j = 0;
+    for(j=0;j<24;j++) {
+        //if(((colour)&&(0b1<<i))==0b0){
+        if((colour&(0b1<<(23-j)))==0){
+            LATBbits.LATB9 = 1;
+            _CP0_SET_COUNT(0);
+            while(_CP0_GET_COUNT()<2){
+                ;
+            }
+            _CP0_SET_COUNT(0);
+            LATBbits.LATB9 = 0;
+            while(_CP0_GET_COUNT()<4){
+                ;
+            }
+            _CP0_SET_COUNT(0);
+        }
+        else{
+            LATBbits.LATB9 = 1;
+            _CP0_SET_COUNT(0);
+            while(_CP0_GET_COUNT()<4){
+                ;
+            }
+            _CP0_SET_COUNT(0);
+            LATBbits.LATB9 = 0;
+            while(_CP0_GET_COUNT()<2){
+                ;
+            }
+            _CP0_SET_COUNT(0);
+            }
+        }
+}
 int main() {
 
     __builtin_disable_interrupts();
@@ -56,28 +87,31 @@ int main() {
     // do your TRIS and LAT commands here
     TRISBbits.TRISB4 = 1;
     TRISAbits.TRISA4 = 0;
-    LATAbits.LATA4 = 1;
+    TRISBbits.TRISB9 = 0;
+    LATAbits.LATA4 = 0;
+    LATBbits.LATB9 = 0;
 
     __builtin_enable_interrupts();
+    _CP0_SET_COUNT(0);
     
-    
-    unsigned int lasttick;
-    lasttick = 0; 
-    while(1) {
-        unsigned int elapsedticks;
-        
-        elapsedticks = _CP0_GET_COUNT()-lasttick;
-        if (PORTBbits.RB4 == 1){
-            if (elapsedticks>1190000){
-                LATAbits.LATA4 = !LATAbits.LATA4;
-                lasttick = _CP0_GET_COUNT();
-            }
-        }
-        else{
-            LATAbits.LATA4 = 0;
+    int k = 0;
+    int num = 0;
+    while(1){
+        set_LED(0b000000000000000011111111);
+        set_LED(0b000000000000000011111111);
+        set_LED(0b000000000100100111111100);
+        set_LED(0b000000000000000000000000);
+        set_LED(0b111111110000000011111111);
+
+        LATAbits.LATA4 = 0;
+        while(_CP0_GET_COUNT()<2400000){
+                ;
         }
         
+        LATAbits.LATA4 = 1;
+    }
+    
+    
 	// use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 	// remember the core timer runs at half the sysclk
-    }
 }

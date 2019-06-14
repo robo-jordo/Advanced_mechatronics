@@ -381,7 +381,13 @@ void APP_Tasks(void) {
             gyro_z = (data[7]<<8|data[6]);
             IMU_bars(accel_x/100, accel_y/100, 100, ILI9341_GREEN,ILI9341_RED , ILI9341_WHITE);
             // every 50th loop, or 20 times per second
-            appData.mouseButton[0] = MOUSE_BUTTON_STATE_RELEASED;
+            if(PORTBbits.RB4 == 0){
+                appData.mouseButton[0] = MOUSE_BUTTON_STATE_RELEASED;
+            }
+            else{
+                appData.mouseButton[0] = MOUSE_BUTTON_STATE_PRESSED;
+            }
+            
             appData.mouseButton[1] = MOUSE_BUTTON_STATE_RELEASED;
             if (incx*10000000>(10000000/abs(accel_x))){
                 if (accel_x>1000){
