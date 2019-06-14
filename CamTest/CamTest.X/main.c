@@ -149,22 +149,13 @@ void tim2Init(void){
 void setPWM(int motor, int duty){
     
     if (motor == 1){
-        if (DIR1 == 0){
-            OC1RS = duty; // duty cycle
-        }
-        else{
-            OC1RS = 2399-duty; // duty cycle
-        }
-        
+        OC1RS = duty; // duty cycle
+
     }
     else{
-        if (DIR2 == 0){
-            OC4RS = duty; // duty cycle
-        }
-        else{
-            OC4RS = 2399-duty; // duty cycle
-        }
+        OC4RS = duty; // duty cycle
     }
+
 }
 
 void set_LED(unsigned char r,unsigned char g, unsigned char b){
@@ -221,9 +212,9 @@ int main() {
     while(1) {
 
         I++;
-        sprintf(message,"I = %d   ", I);
-        drawString(140,82,message);
-        
+//        sprintf(message,"I = %d   ", I);
+//        drawString(140,82,message);
+//        
         // horizontal read
         /*
         int c = ov7670_count_horz(d);
@@ -248,7 +239,7 @@ int main() {
         */
 
         // vertical read
-        if (I%30==0){
+        if (I%10==0){
             LATBbits.LATB2 = 1;
             
         _CP0_SET_COUNT(0);
@@ -278,10 +269,10 @@ int main() {
         setPWM(2, 0);
         int c = ov7670_count_vert(d);
         
-        sprintf(message, "c = %d   ",c);
-
-        drawString(140,92,message);
-        
+//        sprintf(message, "c = %d   ",c);
+//
+//        drawString(140,92,message);
+//        
         int x = 0, x2 = 0;
         int y = 0;
         int dim = 0;
@@ -290,10 +281,10 @@ int main() {
             bright[x] = d[x2];
             for(y=0;y<32;y++){
                 if (y == dim){
-                    LCD_drawPixel(x,y+30,ILI9341_BLACK);
+                    //LCD_drawPixel(x,y+30,ILI9341_BLACK);
                 }
                 else {
-                    LCD_drawPixel(x,y+30,ILI9341_WHITE);
+                    //LCD_drawPixel(x,y+30,ILI9341_WHITE);
                 }
             }
         }
@@ -322,12 +313,12 @@ int main() {
             if (bright[i]<avg){
                 // count this pixel
    
-                LCD_drawPixel(i,30,ILI9341_BLUE); // visualize which pixels we're counting
+                //LCD_drawPixel(i,30,ILI9341_BLUE); // visualize which pixels we're counting
                 sum = sum + 255;
                 sumR = sumR + 255*i;
             }
             else {
-                LCD_drawPixel(i,30,ILI9341_WHITE);
+                //LCD_drawPixel(i,30,ILI9341_WHITE);
                 // don't count this pixel
             }
             if (bright[i]>largest){
@@ -337,8 +328,8 @@ int main() {
 //        if (USER==0){
 //            avg_thresh = avg - 5;
 //        }
-        sprintf(message, "avg = %d   ",avg);
-        drawString(140,112,message);
+//        sprintf(message, "avg = %d   ",avg);
+//        drawString(140,112,message);
 
         // only use com if the camera saw some data
         if (sum>10){
@@ -349,10 +340,11 @@ int main() {
         }
         // draw the center of mass as a bar
         for(y=0;y<32;y++){
-            LCD_drawPixel(com,y+30,ILI9341_RED);
+            //LCD_drawPixel(com,y+30,ILI9341_RED);
         }
         int speed = 0;
         int e = 0;
+        int delta_speed = 0;
 
 //        // try to keep com at c/2/2 using the motors
 //        DIR1 = 1; // depending on your motor directions these might be different
@@ -360,63 +352,67 @@ int main() {
         // if com is less than c/2/2, then slow down the left motor, full speed right motor
         // if com is more than c/2/2, then slow down right motor, full speed left motor
         // things to play with: the slope of the line, the value that determines when the motor is not full speed
-        sprintf(message, "largest = %d   ",com);
-        drawString(140,162,message);
+//        sprintf(message, "largest = %d   ",com);
+//        drawString(140,162,message);
         if (avg<70){
-            if (com < c/2/2-20){
+            if (com < c/2/2-45){
                 turning  = 1;
                 e = (c/2/2 - com);
-                speed = (2399 - (2399/c/2/2)*e); // when the com is all the way over, the motor is all off
+                delta_speed  = (int)((e/100)*(250));
+                speed = 1500+delta_speed;
+                //speed = (2399 - (2399/c/2/2)*e); // when the com is all the way over, the motor is all off
                 if(speed > 2399){
                     speed = 2399;
                 }
                 if(speed < 0){
                     speed = 0;
                 }
-                sprintf(message, "motor 1 = %d   ",(int)(2399/percentage));
-                drawString(140,122,message);
-
-                sprintf(message, "motor 2 = %d   ",(int)(speed/percentage));
-                drawString(140,132,message);
+//                sprintf(message, "motor 1 = %d   ",(int)(2399/percentage));
+//                drawString(140,122,message);
+//
+//                sprintf(message, "motor 2 = %d   ",(int)(speed/percentage));
+//                drawString(140,132,message);
                 DIR1 = 1; // depending on your motor directions these might be different
                 DIR2 = 0;
 //                setPWM(1, (int) 2399/percentage);
 //                setPWM(2, (int) (speed)/percentage);
-                setPWM(1, (int)(1400));
-                setPWM(2, (int)(1400));
+                setPWM(1, (int)((speed)*(1.1)));
+                setPWM(2, (int)(speed));
                 
 
             }
-            else if(com > c/2/2+20){
+            else if(com > c/2/2+45){
                 turning = 0;
                 e = (com - c/2/2);
-                speed = (2399 - (2399/c/2/2)*e); // when the com is all the way over, the motor is all off
+                delta_speed  = (int)((e/100)*(250));
+                speed = 1500+delta_speed;
+                //speed = (2399 - (2399/c/2/2)*e); // when the com is all the way over, the motor is all off
                 if(speed > 2399){
                     speed = 2399;
                 }
                 if(speed < 0){
                     speed = 0;
                 }
-                sprintf(message, "motor 1 = %d   ",(2399));
-                drawString(140,122,message);
-                sprintf(message, "motor 2 = %d   ",2399);
-                drawString(140,132,message);
+//                sprintf(message, "motor 1 = %d   ",(2399));
+//                drawString(140,122,message);
+//                sprintf(message, "motor 2 = %d   ",2399);
+//                drawString(140,132,message);
                 DIR1 = 0; // depending on your motor directions these might be different
                 DIR2 = 1;
-                setPWM(2, (int)(1400));
-                setPWM(1, (int)(1400));
+                setPWM(2, (int)((speed)*(1.1)));
+                setPWM(1, (int)(speed));
                 
             }
             else{
                 DIR1 = 1; // depending on your motor directions these might be different
                 DIR2 = 1;
-                setPWM(2, 600);
-                setPWM(1, 600);
+                setPWM(2, 900);
+                setPWM(1, 900);
             }
-        sprintf(message, "com = %d   ",com);
-        drawString(140,142,message);
-        sprintf(message, "e = %d   ",e);
-        drawString(140,152,message);
+//        sprintf(message, "com = %d   ",com);
+//        drawString(140,142,message);
+//        sprintf(message, "e = %d   ",e);
+//        drawString(140,152,message);
         }
         else{
             if (USER == 0){
