@@ -69,6 +69,9 @@ void startup() {
     TRISAbits.TRISA10 = 0; // DIR1
     DIR1 = 0;
     TRISBbits.TRISB4 = 1; // USER
+    TRISBbits.TRISB2 = 0; // Cannon
+    LATBbits.LATB2 = 0;
+    
     
     // OC1 is B15, goes with DIR1
     RPB15Rbits.RPB15R = 0b0101;
@@ -128,22 +131,12 @@ void tim2Init(void){
 void setPWM(int motor, int duty){
     
     if (motor == 1){
-        if (DIR1 == 0){
-            OC1RS = duty; // duty cycle
-        }
-        else{
-            OC1RS = 2399-duty; // duty cycle
-        }
+        OC1RS = duty; // duty cycle
         
     }
     else{
-        if (DIR2 == 0){
-            OC4RS = duty; // duty cycle
+        OC4RS = duty; // duty cycle
         }
-        else{
-            OC4RS = 2399-duty; // duty cycle
-        }
-    }
 }
 
 void set_LED(unsigned char r,unsigned char g, unsigned char b){
@@ -201,7 +194,10 @@ int main() {
         I++;
         sprintf(message,"I = %d   ", I);
         drawString(140,82,message);
-        
+        if (I%20==0){
+            LATBbits.LATB2 = 1;
+        }
+
         // horizontal read
         /*
         int c = ov7670_count_horz(d);
@@ -230,6 +226,7 @@ int main() {
         while(_CP0_GET_COUNT()<3500000){
             ;
         }
+        LATBbits.LATB2 = 0;
         setPWM(1, 0);
         setPWM(2, 0);
         int c = ov7670_count_vert(d);
@@ -319,7 +316,7 @@ int main() {
         sprintf(message, "largest = %d   ",com);
         drawString(140,162,message);
         if (avg<70){
-            if (com < c/2/2-20){
+            if (com < c/2/2-25){
                 turning  = 1;
                 e = (c/2/2 - com)*25;
                 speed = (2399 - (2399/c/2/2)*e); // when the com is all the way over, the motor is all off
@@ -338,12 +335,12 @@ int main() {
                 DIR2 = 0;
 //                setPWM(1, (int) 2399/percentage);
 //                setPWM(2, (int) (speed)/percentage);
-                setPWM(1, (int)(1400));
-                setPWM(2, (int)(1400));
+                setPWM(1, (int)(1000));
+                setPWM(2, (int)(1000));
                 
 
             }
-            else if(com > c/2/2+20){
+            else if(com > c/2/2+25){
                 turning = 0;
                 e = (com - c/2/2)*25;
                 speed = (2399 - (2399/c/2/2)*e); // when the com is all the way over, the motor is all off
@@ -359,15 +356,15 @@ int main() {
                 drawString(140,132,message);
                 DIR1 = 0; // depending on your motor directions these might be different
                 DIR2 = 1;
-                setPWM(2, (int)(1400));
-                setPWM(1, (int)(1400));
+                setPWM(2, (int)(1000));
+                setPWM(1, (int)(1000));
                 
             }
             else{
                 DIR1 = 1; // depending on your motor directions these might be different
                 DIR2 = 1;
-                setPWM(2, 600);
-                setPWM(1, 600);
+                setPWM(2, 700);
+                setPWM(1, 700);
             }
         sprintf(message, "com = %d   ",com);
         drawString(140,142,message);
@@ -388,4 +385,3 @@ int main() {
 
     }
 }
-

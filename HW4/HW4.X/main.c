@@ -156,31 +156,31 @@ int main(void){
     _CP0_SET_COUNT(0);
     while(1) {
         
-        float f = 1024 +1024*sin(i*2*3.1415/1000*10);  //should make a 10Hz sin wave)
-        float g = j*4;
-        i++;
-        if (j>98){
-            top = 1;
-        }
-        if (j==0){
-            top = 0;
-        }
-        if (top == 0){
-            j++;
-        }
-        if (top == 1){
-            j--;
-        }
-        
-        setVoltage(0, f);
-        setVoltage(1, g);
+//        float f = 1024 +1024*sin(i*2*3.1415/1000*10);  //should make a 10Hz sin wave)
+//        float g = j*4;
+//        i++;
+//        if (j>98){
+//            top = 1;
+//        }
+//        if (j==0){
+//            top = 0;
+//        }
+//        if (top == 0){
+//            j++;
+//        }
+//        if (top == 1){
+//            j--;
+//        }
+//        
+//        setVoltage(0, f);
+//        setVoltage(1, g);
        
-        while(_CP0_GET_COUNT()<24000){
-            ;
-        }
+//        while(_CP0_GET_COUNT()<24000){
+//            ;
+//        }
         _CP0_SET_COUNT(0);
-        if (PORTBbits.RB4 == 1){
-            LATAbits.LATA4 = !LATAbits.LATA4;
+        if (PORTBbits.RB4 == 0){
+             LATAbits.LATA4 = 1;
         }
         else{
             LATAbits.LATA4 = 0;
