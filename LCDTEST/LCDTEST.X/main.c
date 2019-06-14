@@ -138,9 +138,9 @@ void startup() {
     RPA4Rbits.RPA4R = 0b0101;
     
     // LCD uses SPI1: A0 is SDO, A1 is SDI, B5 is CST, B14 is SCK1, A9 is DC, B7 is CS
-    SPI1_init();
-    LCD_init();
-    LCD_clearScreen(ILI9341_BLACK);
+//    SPI1_init();
+//    LCD_init();
+//    LCD_clearScreen(ILI9341_BLACK);
     
     // Camera uses C0-7, C8 as OC2, A8 as INT3/PCLK, B13 as INT2/HREF, C9 as INT1/VSYNC, and I2C1
     
@@ -225,9 +225,9 @@ int main() {
        
     while(1) {
         int i =0;
-            draw_cam(0, red);
-            draw_cam(1, green);
-            draw_cam(2, blue);
+//            draw_cam(0, red);
+//            draw_cam(1, green);
+//            draw_cam(2, blue);
 //        _CP0_SET_COUNT(0);
 //        if (USER == 0){
 //            setPWM(1,100);
